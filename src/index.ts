@@ -1055,9 +1055,10 @@ function realActivate(context: ExtensionContext): void {
       }
       await client.onReady()
       try {
-        await client.sendRequest(ExecuteCommandRequest.type.method, params);
-      } catch {
-        void Window.showErrorMessage('Failed to apply ESLint fixes to the document. Please consider opening an issue with steps to reproduce.')
+        await client.sendRequest(ExecuteCommandRequest.type.method, params)
+      } catch (e) {
+        client.error(`Failed to apply ESLint fixes to the document: ${e}`)
+        void Window.showErrorMessage(`Failed to apply ESLint fixes to the document: ${e}. Please consider opening an issue with steps to reproduce.`)
       }
     }),
     Commands.registerCommand('eslint.showOutputChannel', async () => {
